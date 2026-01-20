@@ -984,8 +984,7 @@
           "items": {
             "patternProperties": {
               "^bundle::.+": {
-                "$ref": "#/definitions/StepBundleOverrideModel",
-                "description": "A Step Bundle override in the Step bundle."
+                "$ref": "#/definitions/StepBundleOverrideModel"
               },
               "^(?!bundle::)(?!with$).*": {
                 "$ref": "#/definitions/StepModel"
@@ -1004,13 +1003,13 @@
     "StepBundleOverrideModel": {
       "properties": {
         "title": {
-          "type": "string",
+          "type": "string"
         },
         "summary": {
-          "type": "string",
+          "type": "string"
         },
         "description": {
-          "type": "string",
+          "type": "string"
         },
         "envs": {
           "$ref": "#/definitions/EnvModel"
