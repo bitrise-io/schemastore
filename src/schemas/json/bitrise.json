@@ -591,6 +591,34 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "PushTriggerMapItemModelCommitsCondition": {
+      "oneOf": [
+        {
+          "required": ["pattern"],
+          "properties": {
+            "pattern": {
+              "type": "string"
+            },
+            "last_commit": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "required": ["regex"],
+          "properties": {
+            "regex": {
+              "type": "string"
+            },
+            "last_commit": {
+              "type": "boolean"
+            }
+          }
+        }
+      ],
+      "additionalProperties": false,
+      "type": "object"
+    },
     "PushTriggerModel": {
       "properties": {
         "enabled": {
@@ -609,14 +637,14 @@
         },
         "commit_message": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/PushTriggerMapItemModelCommitsCondition" },
             { "type": "string" }
           ],
           "description": "Define a Git commit message that should trigger a Bitrise build."
         },
         "changed_files": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/PushTriggerMapItemModelCommitsCondition" },
             { "type": "string" }
           ],
           "description": "Set a filepath or a folder. If any file or files change in that location, Bitrise triggers a build."
