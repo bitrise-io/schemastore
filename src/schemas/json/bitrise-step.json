@@ -10,7 +10,7 @@
         },
         "bin_name": {
           "type": "string",
-          "description": "The name of the binary."
+          "description": "The name of the binary. This is optional and can be used if the binary name differs from the package name."
         }
       },
       "additionalProperties": false,
@@ -34,7 +34,7 @@
         },
         "bin_name": {
           "type": "string",
-          "description": "The name of the binary."
+          "description": "The name of the binary. This is optional and can be used if the binary name differs from the package name."
         }
       },
       "additionalProperties": false,
@@ -44,7 +44,6 @@
       "properties": {
         "name": {
           "type": "string",
-          "description": "The name of the dependency to be checked."
         }
       },
       "additionalProperties": false,
@@ -97,13 +96,16 @@
     "ExecutableModel": {
       "properties": {
         "storage_uri": {
-          "type": "string"
+          "type": "string",
+          "description": "The URI where the executable binary is stored."
         },
         "hash": {
-          "type": "string"
+          "type": "string",
+          "description": "The hash of the executable binary for integrity verification."
         }
       },
-      "type": "object"
+      "type": "object",
+      "description": "Platform-specific executable binary".
     },
     "GoStepToolkitModel": {
       "required": ["package_name"],
@@ -155,7 +157,7 @@
           "patternProperties": {
             ".*": {
               "type": "string",
-              "description": "The URL of an asset required by the Step."
+              "description": "The property stores the Step image. It is only set in the spec.json file in the Step Library."
             }
           },
           "type": "object"
@@ -181,7 +183,7 @@
             "type": "string"
           },
           "type": "array",
-          "description": "This property defines the project type category of the Step. For example, `flutter` or `ios`."
+          "description": "This property defines the functional category of the Step. For example, `build` or `test`."
         },
         "dependencies": {
           "items": {
@@ -196,6 +198,7 @@
         },
         "deps": {
           "$ref": "#/definitions/DepsModel",
+          "description": "The dependencies required by the Step."
         },
         "is_requires_admin_user": {
           "type": "boolean",
@@ -211,7 +214,7 @@
         },
         "run_if": {
           "type": "string",
-          "description": "This property sets conditions for running a Step. It requires a valid Go template expression."
+          "description": "This property sets conditions for running a Step. It requires boolean value or a valid Go template expression."
         },
         "timeout": {
           "type": "integer",
@@ -224,7 +227,7 @@
             }
           },
           "type": "object",
-          "description": "Metadata related to the Step."
+          "description": "Additional metadata related to the Step."
         },
         "inputs": {
           "items": {
@@ -271,7 +274,7 @@
         },
         "commit": {
           "type": "string",
-          "description": "The specific commit hash of the Step's source code."
+          "description": "The commit hash for the version tag of the Step's current version."
         }
       },
       "additionalProperties": false,
