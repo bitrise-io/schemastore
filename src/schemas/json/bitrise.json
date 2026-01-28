@@ -7,7 +7,7 @@
       "properties": {
         "title": {
           "type": "string",
-          "description": "The title of the project as it appears on Bitrise."
+          "description": "The title of the project."
         },
         "summary": {
           "type": "string",
@@ -65,11 +65,11 @@
         },
         "default_step_lib_source": {
           "type": "string",
-          "description": "The default code repository for the Steps used in your configuration. Bitrise uses this source if no specific source is provided for a given Step."
+          "description": "The default Step library for the Steps used in your configuration. Bitrise uses this source if no specific source is provided for a given Step."
         },
         "project_type": {
           "type": "string",
-          "description": "The type of your Bitrise project, such as ios, android, flutter, and so on. When adding a new project, the project scanner can automatically detect the project type and automatically create a basic configuration."
+          "description": "The type of your Bitrise project, such as ios, android, flutter, and so on."
         },
         "title": {
           "type": "string",
@@ -90,7 +90,7 @@
             }
           },
           "type": "object",
-          "description": "This property allows running Docker containers as services for advanced integration testing. Define services here and refer to them in a `with` group within a Workflow."
+          "description": "Docker container definitions used by Steps as service containers."
         },
         "containers": {
           "patternProperties": {
@@ -99,7 +99,7 @@
             }
           },
           "type": "object",
-          "description": "This property allows running Docker containers for Step execution. You define the container in the top level of the configuration file and then refer to it in a `with` group in the Workflow configuration."
+          "description": "Docker container definitions used by Steps as execution containers."
         },
         "app": {
           "$ref": "#/definitions/AppModel"
@@ -111,7 +111,7 @@
             }
           },
           "type": "object",
-          "description": "Stores project metadata key-value pairs. Most importantly, it defines the default stack and the build machine type for the project."
+          "description": "Stores project metadata key-value pairs related to the Bitrise configuration. Most importantly, it defines the default stack and the build machine type for the project."
         },
         "trigger_map": {
           "items": {
@@ -145,7 +145,7 @@
             }
           },
           "type": "object",
-          "description": "The Workflows included in your configuration. A Workflow is a collection of blocks of script executions called Steps. Steps are executed sequentially within a Workflow."
+          "description": "The Workflows included in your configuration. A Workflow is a collection of Steps: reusable, configurable units of work. Steps are executed sequentially within a Workflow."
         },
         "step_bundles": {
           "patternProperties": {
@@ -154,10 +154,11 @@
             }
           },
           "type": "object",
-          "description": "Step bundles allow you to group multiple Steps into a single unit. With Step bundles, you can reuse Steps and sequences of Steps without manually copying and pasting from a YAML configuration file."
+          "description": "Step bundles allow you to group multiple Steps into a single unit. With Step bundles, you can reuse Steps and sequences of Steps."
         },
         "tools": {
-          "$ref": "#/definitions/ToolsModel"
+          "$ref": "#/definitions/ToolsModel",
+          "description": "Declarative configuration for tool versions used in the build. "
         },
         "tool_config": {
           "$ref": "#/definitions/ToolConfigModel"
@@ -599,7 +600,7 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "description": "To use the triggers defined in this section, set this property to `true`. If you set it to `false`, Bitrise ignores all triggers defined here."
+          "description": "The property determines whether a defined trigger is active. The default value is `true`. If you want to disable the trigger, set it to `false`."
         },
         "push": {
           "items": {
@@ -723,7 +724,7 @@
             { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
             { "type": "string" }
           ],
-          "description": "You can mark pull requests with labels. If a pull request's label matches the label in this property, Bitrise triggers a build."
+          "description": "If a pull request's label matches the label in this property, Bitrise triggers a build."
         },
         "comment": {
           "oneOf": [
