@@ -43,7 +43,7 @@
     "CheckOnlyDepModel": {
       "properties": {
         "name": {
-          "type": "string",
+          "type": "string"
         }
       },
       "additionalProperties": false,

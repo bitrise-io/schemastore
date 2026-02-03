@@ -29,30 +29,6 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "AptGetDepModel": {
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The name of the package to be installed via apt-get."
-        },
-        "bin_name": {
-          "type": "string",
-          "description": "The name of the binary provided by the package. This is optional and can be used if the binary name differs from the package name."
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "BashStepToolkitModel": {
-      "properties": {
-        "entry_file": {
-          "type": "string",
-          "description": "The path to the Bash script file that serves as the entry point for the Step."
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
     "BitriseDataModel": {
       "anyOf": [
         { "required": ["format_version"] },
@@ -175,30 +151,6 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "BrewDepModel": {
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The name of the package to be installed via Homebrew."
-        },
-        "bin_name": {
-          "type": "string",
-          "description": "The name of the binary provided by the package. This is optional and can be used if the binary name differs from the package name."
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "CheckOnlyDepModel": {
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The name of the dependency to check for."
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
     "ContainerModel": {
       "required": ["image"],
       "properties": {
@@ -224,36 +176,6 @@
         "options": {
           "type": "string",
           "descriptions": "Define additional Docker container resource options. These are parameters that will be passed to the `docker create` command."
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "DepsModel": {
-      "properties": {
-        "brew": {
-          "items": {
-            "$ref": "#/definitions/BrewDepModel",
-            "description": "A Homebrew dependency to be installed."
-          },
-          "type": "array",
-          "description": "Dependencies to be installed via Homebrew."
-        },
-        "apt_get": {
-          "items": {
-            "$ref": "#/definitions/AptGetDepModel",
-            "description": "An apt-get dependency to be installed."
-          },
-          "type": "array",
-          "description": "Dependencies to be installed via apt-get."
-        },
-        "check_only": {
-          "items": {
-            "$ref": "#/definitions/CheckOnlyDepModel",
-            "description": "A dependency that will only be checked for existence on the build machine."
-          },
-          "type": "array",
-          "description": "Dependencies that will only be checked for existence on the build machine."
         }
       },
       "additionalProperties": false,
@@ -290,17 +212,6 @@
       },
       "type": "array",
       "description": "A list of Environment Variables."
-    },
-    "GoStepToolkitModel": {
-      "required": ["package_name"],
-      "properties": {
-        "package_name": {
-          "type": "string",
-          "description": "The name of the Go package that serves as the entry point for the Step."
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
     },
     "PipelineModel": {
       "properties": {
@@ -460,69 +371,6 @@
         "description": {
           "type": "string",
           "description": "A detailed description of the Step."
-        },
-        "website": {
-          "type": "string",
-          "description": "The URL of the Step's website or documentation."
-        },
-        "source_code_url": {
-          "type": "string",
-          "description": "The URL of the Step's source code repository."
-        },
-        "support_url": {
-          "type": "string",
-          "description": "The URL where users can get support for the Step."
-        },
-        "published_at": {
-          "type": "string",
-          "format": "date-time",
-          "description": "The date and time when the Step was published."
-        },
-        "source": {
-          "$ref": "#/definitions/StepSourceModel"
-        },
-        "asset_urls": {
-          "patternProperties": {
-            ".*": {
-              "type": "string",
-              "description": "The URL of an asset related to the Step."
-            }
-          },
-          "type": "object",
-          "description": "A map of asset names to their URLs."
-        },
-        "host_os_tags": {
-          "items": {
-            "type": "string",
-            "description": "The name of a Bitrise stack (host OS) that the Step supports."
-          },
-          "type": "array",
-          "description": "A list of the Bitrise stacks (host OS) that the Step supports. For example, `linux-dind` or `macos-11.0`."
-        },
-        "project_type_tags": {
-          "items": {
-            "type": "string",
-            "description": "The name of a project type that the Step supports."
-          },
-          "type": "array",
-          "description": "This property defines the project type category of the Step. For example, `flutter` or `ios`."
-        },
-        "type_tags": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array",
-          "description": "A list of tags that define the functional category that the Step belongs to. For example, a dependency installer Step should have the type `dependency`. This allows you to filter by type when searching for a Step in the Workflow Editor."
-        },
-        "toolkit": {
-          "$ref": "#/definitions/StepToolkitModel"
-        },
-        "deps": {
-          "$ref": "#/definitions/DepsModel",
-          "description": "This property defines the required dependencies of the Step. To declare a dependency, specify a package manager and then the dependency you want to install."
-        },
-        "is_requires_admin_user": {
-          "type": "boolean"
         },
         "is_always_run": {
           "type": "boolean",
@@ -767,34 +615,6 @@
             { "type": "string" }
           ],
           "description": "This property looks for the name of a Git tag to trigger a Bitrise build."
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "StepSourceModel": {
-      "properties": {
-        "git": {
-          "type": "string",
-          "description": "The Git repository URL where the Step's source code is hosted."
-        },
-        "commit": {
-          "type": "string",
-          "description": "The specific Git commit hash that identifies the version of the Step's source code."
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "StepToolkitModel": {
-      "properties": {
-        "bash": {
-          "$ref": "#/definitions/BashStepToolkitModel",
-          "description": "The Bash toolkit configuration for the Step."
-        },
-        "go": {
-          "$ref": "#/definitions/GoStepToolkitModel",
-          "description": "The Go toolkit configuration for the Step."
         }
       },
       "additionalProperties": false,
