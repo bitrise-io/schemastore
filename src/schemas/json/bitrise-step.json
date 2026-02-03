@@ -195,7 +195,7 @@
           "description": "The toolkit used by the Step."
         },
         "deps": {
-          "$ref": "#/definitions/DepsModel",
+          "$ref": "#/definitions/DepsModel"
         },
         "is_requires_admin_user": {
           "type": "boolean",
