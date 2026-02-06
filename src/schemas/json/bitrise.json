@@ -37,7 +37,7 @@
       "properties": {
         "format_version": {
           "type": "string",
-          "description": "The minimum Bitrise CLI version required to run your build. Locally, you can get your Bitrise CLI’s supported highest format version with `bitrise version --full`."
+          "description": "The version of the Bitrise configuration format. The Bitrise CLI checks it to ensure compatibility between the configuration file and the CLI version. This is relevant for locally run builds: on the Bitrise website, the CLI is always up to date, so the `format_version` property doesn't have an effect on builds triggered."
         },
         "default_step_lib_source": {
           "type": "string",
@@ -94,7 +94,7 @@
             "$ref": "#/definitions/TriggerMapItemModel"
           },
           "type": "array",
-          "description": "Defines the build triggers on a project level. This is the legacy method of configuring triggers: we recommend using target-based triggers defined within a Pipeline or a Workflow instead."
+          "description": "Defines the build triggers on a project level. This is the legacy method of configuring triggers: we recommend using target-based triggers defined as part of a Pipeline or a Workflow instead."
         },
         "pipelines": {
           "patternProperties": {
