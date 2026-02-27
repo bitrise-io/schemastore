@@ -154,6 +154,11 @@
     "ContainerModel": {
       "required": ["image"],
       "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["execution", "service"],
+          "description": "The type of the container. Use `execution` for containers that run the step, and `service` for containers that run alongside the step."
+        },
         "image": {
           "type": "string",
           "description": "This property defines the Docker image used for the container, in a `name:tag` format."
@@ -180,6 +185,31 @@
       },
       "additionalProperties": false,
       "type": "object"
+    },
+    "ContainerReferenceModel": {
+      "description": "A reference to a container defined in the `containers` map. Can be a plain container name (string shorthand, reuses the container without recreating) or an object with the container name as key and options as value.",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "The name of a container defined in the `containers` map. The container is reused without recreating."
+        },
+        {
+          "type": "object",
+          "description": "A container reference with options. The key is the container name defined in the `containers` map.",
+          "patternProperties": {
+            ".*": {
+              "properties": {
+                "recreate": {
+                  "type": "boolean",
+                  "description": "Set to `true` to discard the current container and start a fresh one before the step runs. The default value is `false`."
+                }
+              },
+              "additionalProperties": false,
+              "type": "object"
+            }
+          }
+        }
+      ]
     },
     "DockerCredentialModel": {
       "required": ["username", "password"],
@@ -400,6 +430,17 @@
           },
           "type": "object",
           "description": "Stores metadata key-value pairs."
+        },
+        "execution_container": {
+          "$ref": "#/definitions/ContainerReferenceModel",
+          "description": "The execution container to run this Step in. References a container defined in the `containers` map."
+        },
+        "service_containers": {
+          "type": "array",
+          "description": "The list of service containers to run alongside this Step. Each item references a container defined in the `containers` map.",
+          "items": {
+            "$ref": "#/definitions/ContainerReferenceModel"
+          }
         },
         "inputs": {
           "$ref": "#/definitions/EnvModel",
@@ -874,6 +915,17 @@
           "$ref": "#/definitions/EnvModel",
           "description": "Inputs defined for the Step bundle: these are values that can be set when the Step bundle is added to a Workflow."
         },
+        "execution_container": {
+          "$ref": "#/definitions/ContainerReferenceModel",
+          "description": "The default execution container for all Steps in this bundle. Can be overridden at the call-site or by individual Steps."
+        },
+        "service_containers": {
+          "type": "array",
+          "description": "The default service containers for all Steps in this bundle. Can be overridden at the call-site.",
+          "items": {
+            "$ref": "#/definitions/ContainerReferenceModel"
+          }
+        },
         "steps": {
           "items": {
             "patternProperties": {
@@ -910,6 +962,17 @@
         },
         "inputs": {
           "$ref": "#/definitions/EnvModel"
+        },
+        "execution_container": {
+          "$ref": "#/definitions/ContainerReferenceModel",
+          "description": "Overrides the execution container defined in the Step bundle definition."
+        },
+        "service_containers": {
+          "type": "array",
+          "description": "Overrides the service containers defined in the Step bundle definition.",
+          "items": {
+            "$ref": "#/definitions/ContainerReferenceModel"
+          }
         }
       },
       "additionalProperties": false,
