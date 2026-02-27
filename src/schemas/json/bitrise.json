@@ -175,7 +175,7 @@
         },
         "options": {
           "type": "string",
-          "descriptions": "Define additional Docker container resource options. These are parameters that will be passed to the `docker create` command."
+          "description": "Define additional Docker container resource options. These are parameters that will be passed to the `docker create` command."
         }
       },
       "additionalProperties": false,
@@ -280,8 +280,8 @@
         },
         "should_always_run": {
           "type": "string",
-          "enum": ["off", "workflow"],
-          "description": "This property defines whether a Workflow should run if a previous Workflow failed. Set to `workflow` if you want this Workflow to always run."
+          "enum": ["none", "workflow"],
+          "description": "This property defines whether a Workflow should run if a previous Workflow failed. Set to `workflow` if you want this Workflow to always run regardless of failures. The default value is `none`."
         },
         "run_if": {
           "$ref": "#/definitions/GraphPipelineWorkflowRunIfModel"
@@ -483,10 +483,12 @@
           "required": ["pattern"],
           "properties": {
             "pattern": {
-              "type": "string"
+              "type": "string",
+              "description": "A glob pattern used to match against the condition."
             },
             "last_commit": {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "Defines whether Bitrise should evaluate every commit message or changed file in a code push or only those belonging to the most recent commit. Its default value is `false`."
             }
           }
         },
@@ -494,10 +496,12 @@
           "required": ["regex"],
           "properties": {
             "regex": {
-              "type": "string"
+              "type": "string",
+              "description": "A regular expression pattern used to match against the condition."
             },
             "last_commit": {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "Defines whether Bitrise should evaluate every commit message or changed file in a code push or only those belonging to the most recent commit. Its default value is `false`."
             }
           }
         }
@@ -833,7 +837,8 @@
           "description": "The priority of the Workflow."
         },
         "tools": {
-          "$ref": "#/definitions/ToolsModel"
+          "$ref": "#/definitions/ToolsModel",
+          "description": "Declarative configuration for tool versions used in the Workflow."
         },
         "meta": {
           "patternProperties": {
@@ -932,7 +937,7 @@
         },
         "tag": {
           "type": "string",
-          "description": "The Git tag of the commit that contains the included configuration file. It has a higher priority than `branch` but a lower priority than `tag`."
+          "description": "The Git tag of the commit that contains the included configuration file. It has a higher priority than `branch` but a lower priority than `commit`."
         }
       },
       "additionalProperties": false,
