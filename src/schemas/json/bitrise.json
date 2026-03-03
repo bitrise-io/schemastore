@@ -161,26 +161,27 @@
         },
         "image": {
           "type": "string",
-          "description": "This property defines the Docker image used for the container, in a `name:tag` format."
+          "description": "The Docker image for the container, in `[REPOSITORY[:TAG]]` format."
         },
         "credentials": {
-          "$ref": "#/definitions/DockerCredentialModel"
+          "$ref": "#/definitions/DockerCredentialModel",
+          "description": "Credentials for authenticating with a Docker registry when pulling the image."
         },
         "ports": {
           "type": "array",
-          "description": "This property defines the ports which are used to access the service.",
+          "description": "Port mappings that expose container ports to the host or to other containers.",
           "items": {
             "type": "string",
-            "description": "A port mapping in the format `host_port:container_port`."
+            "description": "A port mapping in the format `[HOST_PORT]:[CONTAINER_PORT]`."
           }
         },
         "envs": {
           "$ref": "#/definitions/EnvModel",
-          "description": "Define Environment Variables for the Docker container."
+          "description": "Environment variables passed to the Docker container."
         },
         "options": {
           "type": "string",
-          "description": "Define additional Docker container resource options. These are parameters that will be passed to the `docker create` command."
+          "description": "Additional options passed to the `docker create` command. Note: `--network`, `--volume` (`-v`), and `--entrypoint` are not supported."
         }
       },
       "additionalProperties": false,
@@ -220,11 +221,11 @@
         },
         "password": {
           "type": "string",
-          "description": "The password used for the `docker login` command."
+          "description": "The password used for the `docker login` command. Use a Secret environment variable to avoid exposing the value in the configuration."
         },
         "server": {
           "type": "string",
-          "description": "The server for the `docker login` command. This is optional if the server is already part of the image reference."
+          "description": "The server used for the `docker login` command. Optional if the server is already part of the image reference."
         }
       },
       "additionalProperties": false,
