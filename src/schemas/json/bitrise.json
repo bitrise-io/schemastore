@@ -393,15 +393,15 @@
       "properties": {
         "title": {
           "type": "string",
-          "description": "The title of the Step."
+          "description": "The human-readable title of the Step."
         },
         "summary": {
           "type": "string",
-          "description": "A short summary of the Step."
+          "description": "A short summary of what the Step does."
         },
         "description": {
           "type": "string",
-          "description": "A detailed description of the Step."
+          "description": "A more detailed overview of the Step's function and configuration."
         },
         "is_always_run": {
           "type": "boolean",
@@ -413,7 +413,7 @@
         },
         "run_if": {
           "type": "string",
-          "description": "This property sets conditions for running a Step. It requires a valid Go template expression."
+          "description": "This property sets conditions for running a Step. It requires boolean value or a valid Go template expression."
         },
         "timeout": {
           "type": "integer",
@@ -421,7 +421,7 @@
         },
         "no_output_timeout": {
           "type": "integer",
-          "description": "This property defines a time limit for Steps: if a Steps runs longer than the defined time without producing an output, the Step fails. Define the limit in seconds."
+          "description": "This property defines a time limit for a Step that produces no output: if the Step runs for the defined number of seconds without producing any output, the Step fails. Define the limit in seconds."
         },
         "meta": {
           "patternProperties": {
@@ -430,7 +430,7 @@
             }
           },
           "type": "object",
-          "description": "Stores metadata key-value pairs."
+          "description": "Additional metadata related to the Step."
         },
         "execution_container": {
           "$ref": "#/definitions/ContainerReferenceModel",
@@ -460,7 +460,7 @@
       "patternProperties": {
         ".*": {
           "type": "string",
-          "description": "Tool version to set up. Version syntax supports exact versions (e.g. '1.2.3'), partial matches to the latest release (e.g. '22:latest'), partial matches to installed versions (e.g. '1.2:installed'), as well as the special aliases 'latest' and 'installed' to select the highest respective version."
+          "description": "The version of the tool to set up."
         }
       },
       "type": "object"

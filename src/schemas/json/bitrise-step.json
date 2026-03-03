@@ -43,7 +43,8 @@
     "CheckOnlyDepModel": {
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the binary or tool to check for. If it is not present on the system, the Step will fail before running."
         }
       },
       "additionalProperties": false,
@@ -147,7 +148,7 @@
         "published_at": {
           "type": "string",
           "format": "date-time",
-          "description": "The date and time when the Step was published."
+          "description": "The date and time when the Step was published to the Step Library. This is auto-generated and should not be set manually."
         },
         "source": {
           "$ref": "#/definitions/StepSourceModel",
@@ -157,10 +158,11 @@
           "patternProperties": {
             ".*": {
               "type": "string",
-              "description": "The property stores the Step image. It is only set in the spec.json file in the Step Library."
+              "description": "A URL pointing to a Step asset such as an icon image."
             }
           },
-          "type": "object"
+          "type": "object",
+          "description": "URLs of assets associated with the Step, such as icon images. This is auto-generated and only set in the spec.json file in the Step Library."
         },
         "host_os_tags": {
           "items": {
@@ -180,10 +182,11 @@
         },
         "type_tags": {
           "items": {
-            "type": "string"
+            "type": "string",
+            "description": "A functional category tag. For example, `utility`, `test`, or `notification`."
           },
           "type": "array",
-          "description": "This property defines the functional category of the Step. For example, `build` or `test`."
+          "description": "This property defines the functional category of the Step. For example, `utility`, `test`, or `notification`."
         },
         "dependencies": {
           "items": {
@@ -219,6 +222,10 @@
         "timeout": {
           "type": "integer",
           "description": "This property defines a time limit for a Step: if the Step runs longer than the defined time, the Step fails. Define the limit in seconds."
+        },
+        "no_output_timeout": {
+          "type": "integer",
+          "description": "This property defines a time limit for a Step that produces no output: if the Step runs for the defined number of seconds without producing any output, the Step fails. Define the limit in seconds."
         },
         "meta": {
           "patternProperties": {
