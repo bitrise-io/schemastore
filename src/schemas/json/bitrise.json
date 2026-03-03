@@ -154,6 +154,11 @@
     "ContainerModel": {
       "required": ["image"],
       "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["execution", "service"],
+          "description": "The type of the container. Use `execution` for containers that run the step, and `service` for containers that run alongside the step."
+        },
         "image": {
           "type": "string",
           "description": "The Docker image for the container, in `[REPOSITORY[:TAG]]` format."
@@ -167,12 +172,12 @@
           "description": "Port mappings that expose container ports to the host or to other containers.",
           "items": {
             "type": "string",
-            "description": "A port mapping in the format `[HOST_PORT]:[CONTAINER_PORT]`."
+            "description": "A port mapping in the format `[HostPort]:[ContainerPort]`."
           }
         },
         "envs": {
           "$ref": "#/definitions/EnvModel",
-          "description": "Environment variables passed to the Docker container."
+          "description": "Environment variables passed to the Docker container. Workflow-level `envs` are also inherited by containers."
         },
         "options": {
           "type": "string",
@@ -181,6 +186,31 @@
       },
       "additionalProperties": false,
       "type": "object"
+    },
+    "ContainerReferenceModel": {
+      "description": "A reference to a container defined in the `containers` map. Can be a plain container name (string shorthand, reuses the container without recreating) or an object with the container name as key and options as value.",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "The name of a container defined in the `containers` map. The container is reused without recreating."
+        },
+        {
+          "type": "object",
+          "description": "A container reference with options. The key is the container name defined in the `containers` map.",
+          "patternProperties": {
+            ".*": {
+              "properties": {
+                "recreate": {
+                  "type": "boolean",
+                  "description": "Set to `true` to discard the current container and start a fresh one before the step runs. The default value is `false`."
+                }
+              },
+              "additionalProperties": false,
+              "type": "object"
+            }
+          }
+        }
+      ]
     },
     "DockerCredentialModel": {
       "required": ["username", "password"],
@@ -359,6 +389,151 @@
       "maxLength": 100,
       "pattern": "^[a-zA-Z0-9,./():\\-_ <>\\[\\]\\|]*$"
     },
+    "AptGetDepModel": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the package to be installed via apt-get."
+        },
+        "bin_name": {
+          "type": "string",
+          "description": "The name of the binary. This is optional and can be used if the binary name differs from the package name."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "BashStepToolkitModel": {
+      "properties": {
+        "entry_file": {
+          "type": "string",
+          "description": "The path to the bash script file that serves as the entry point for the Step."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "BrewDepModel": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the package to be installed via Homebrew."
+        },
+        "bin_name": {
+          "type": "string",
+          "description": "The name of the binary. This is optional and can be used if the binary name differs from the package name."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CheckOnlyDepModel": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the binary or tool to check for. If it is not present on the system, the Step will fail before running."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DependencyModel": {
+      "properties": {
+        "manager": {
+          "type": "string",
+          "description": "The package manager used to handle the dependency."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the dependency."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DepsModel": {
+      "properties": {
+        "brew": {
+          "items": {
+            "$ref": "#/definitions/BrewDepModel",
+            "description": "A Homebrew dependency required by the Step."
+          },
+          "type": "array",
+          "description": "List of Homebrew dependencies required by the Step."
+        },
+        "apt_get": {
+          "items": {
+            "$ref": "#/definitions/AptGetDepModel",
+            "description": "An apt-get dependency required by the Step."
+          },
+          "type": "array",
+          "description": "List of apt-get dependencies required by the Step."
+        },
+        "check_only": {
+          "items": {
+            "$ref": "#/definitions/CheckOnlyDepModel",
+            "description": "A dependency that is only checked for existence."
+          },
+          "type": "array",
+          "description": "List of dependencies that are only checked for existence."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ExecutableModel": {
+      "properties": {
+        "storage_uri": {
+          "type": "string",
+          "description": "The URI where the executable binary is stored."
+        },
+        "hash": {
+          "type": "string",
+          "description": "The hash of the executable binary for integrity verification."
+        }
+      },
+      "type": "object",
+      "description": "Platform-specific executable binary."
+    },
+    "GoStepToolkitModel": {
+      "required": ["package_name"],
+      "properties": {
+        "package_name": {
+          "type": "string",
+          "description": "The name of the Go package that serves as the entry point for the Step."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "StepSourceModel": {
+      "properties": {
+        "git": {
+          "type": "string",
+          "description": "The Git repository URL of the Step's source code."
+        },
+        "commit": {
+          "type": "string",
+          "description": "The commit hash for the version tag of the Step's current version."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "StepToolkitModel": {
+      "properties": {
+        "bash": {
+          "$ref": "#/definitions/BashStepToolkitModel",
+          "description": "The Bash toolkit configuration for the Step."
+        },
+        "go": {
+          "$ref": "#/definitions/GoStepToolkitModel",
+          "description": "The Go toolkit configuration for the Step."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "StepModel": {
       "properties": {
         "title": {
@@ -372,6 +547,80 @@
         "description": {
           "type": "string",
           "description": "A more detailed overview of the Step's function and configuration."
+        },
+        "website": {
+          "type": "string",
+          "description": "A web URL where users can find more information about the Step or the tools and services it implements."
+        },
+        "source_code_url": {
+          "type": "string",
+          "description": "The URL of the repository of the Step's source code."
+        },
+        "support_url": {
+          "type": "string",
+          "description": "A URL where users can get support for the Step."
+        },
+        "published_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when the Step was published to the Step Library. This is auto-generated and should not be set manually."
+        },
+        "source": {
+          "$ref": "#/definitions/StepSourceModel",
+          "description": "The source code repository and commit information of the Step."
+        },
+        "asset_urls": {
+          "patternProperties": {
+            ".*": {
+              "type": "string",
+              "description": "A URL pointing to a Step asset such as an icon image."
+            }
+          },
+          "type": "object",
+          "description": "URLs of assets associated with the Step, such as icon images. This is auto-generated and only set in the spec.json file in the Step Library."
+        },
+        "host_os_tags": {
+          "items": {
+            "type": "string",
+            "description": "The host operating system tag."
+          },
+          "type": "array",
+          "description": "This property defines the host operating systems the Step is compatible with. For example, `linux` or `macos`."
+        },
+        "project_type_tags": {
+          "items": {
+            "type": "string",
+            "description": "The project type tag."
+          },
+          "type": "array",
+          "description": "This property defines the project type category of the Step. For example, `flutter` or `ios`."
+        },
+        "type_tags": {
+          "items": {
+            "type": "string",
+            "description": "A functional category tag. For example, `utility`, `test`, or `notification`."
+          },
+          "type": "array",
+          "description": "This property defines the functional category of the Step. For example, `utility`, `test`, or `notification`."
+        },
+        "dependencies": {
+          "items": {
+            "$ref": "#/definitions/DependencyModel"
+          },
+          "type": "array",
+          "description": "The dependencies required by the Step."
+        },
+        "toolkit": {
+          "$ref": "#/definitions/StepToolkitModel",
+          "description": "The toolkit used by the Step."
+        },
+        "deps": {
+          "$ref": "#/definitions/DepsModel",
+          "description": "The dependencies required by the Step."
+        },
+        "is_requires_admin_user": {
+          "type": "boolean",
+          "description": "If this property is true, the Step requires admin user privileges to run."
         },
         "is_always_run": {
           "type": "boolean",
@@ -402,13 +651,31 @@
           "type": "object",
           "description": "Additional metadata related to the Step."
         },
+        "execution_container": {
+          "$ref": "#/definitions/ContainerReferenceModel",
+          "description": "The execution container to run this Step in. References a container defined in the `containers` map."
+        },
+        "service_containers": {
+          "type": "array",
+          "description": "The list of service containers to run alongside this Step. Each item references a container defined in the `containers` map.",
+          "items": {
+            "$ref": "#/definitions/ContainerReferenceModel"
+          }
+        },
         "inputs": {
           "$ref": "#/definitions/EnvModel",
-          "description": "Inputs defined for the Step: these are values that can be set when the Step is added to a Workflow."
+          "description": "The inputs of the Step."
         },
         "outputs": {
           "$ref": "#/definitions/EnvModel",
-          "description": "Outputs defined for the Step: these are values that the Step can set during its execution, which can be used by other Steps in the Workflow."
+          "description": "The outputs the Step generates."
+        },
+        "executables": {
+          "description": "Platform-specific executable binaries",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ExecutableModel"
+          }
         }
       },
       "additionalProperties": false,
@@ -875,6 +1142,17 @@
           "$ref": "#/definitions/EnvModel",
           "description": "Inputs defined for the Step bundle: these are values that can be set when the Step bundle is added to a Workflow."
         },
+        "execution_container": {
+          "$ref": "#/definitions/ContainerReferenceModel",
+          "description": "The default execution container for all Steps in this bundle. Can be overridden at the call-site or by individual Steps."
+        },
+        "service_containers": {
+          "type": "array",
+          "description": "The default service containers for all Steps in this bundle. Can be overridden at the call-site.",
+          "items": {
+            "$ref": "#/definitions/ContainerReferenceModel"
+          }
+        },
         "steps": {
           "items": {
             "patternProperties": {
@@ -911,6 +1189,17 @@
         },
         "inputs": {
           "$ref": "#/definitions/EnvModel"
+        },
+        "execution_container": {
+          "$ref": "#/definitions/ContainerReferenceModel",
+          "description": "Overrides the execution container defined in the Step bundle definition."
+        },
+        "service_containers": {
+          "type": "array",
+          "description": "Overrides the service containers defined in the Step bundle definition.",
+          "items": {
+            "$ref": "#/definitions/ContainerReferenceModel"
+          }
         }
       },
       "additionalProperties": false,
