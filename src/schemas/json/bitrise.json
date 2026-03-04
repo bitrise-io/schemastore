@@ -423,7 +423,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "PushTriggerMapItemModelCommitsCondition": {
+    "PushTriggerMapItemCommitsConditionModel": {
       "type": "object",
       "properties": {
         "pattern": {
@@ -456,21 +456,21 @@
         },
         "branch": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "A branch of the project's repository. Bitrise triggers a build if code is pushed to the branch defined in this property."
         },
         "commit_message": {
           "oneOf": [
-            { "$ref": "#/definitions/PushTriggerMapItemModelCommitsCondition" },
+            { "$ref": "#/definitions/PushTriggerMapItemCommitsConditionModel" },
             { "type": "string" }
           ],
           "description": "Define a Git commit message that should trigger a Bitrise build."
         },
         "changed_files": {
           "oneOf": [
-            { "$ref": "#/definitions/PushTriggerMapItemModelCommitsCondition" },
+            { "$ref": "#/definitions/PushTriggerMapItemCommitsConditionModel" },
             { "type": "string" }
           ],
           "description": "Set a filepath or a folder. If any file or files change in that location, Bitrise triggers a build."
@@ -495,42 +495,42 @@
         },
         "source_branch": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Bitrise triggers a build if the branch name in this property matches the source branch of a pull request opened in the project's repository."
         },
         "target_branch": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Bitrise triggers a build if the branch name in the property matches the target branch of a pull request opened in the project's repository."
         },
         "label": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "If a pull request's label matches the label in this property, Bitrise triggers a build."
         },
         "comment": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "This property looks for comments on pull requests to trigger Bitrise builds."
         },
         "commit_message": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Define a Git commit message that should trigger a Bitrise build."
         },
         "changed_files": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Set a filepath or a folder. If any file or files change in that location in a pull request, Bitrise triggers a build."
@@ -551,7 +551,7 @@
         },
         "name": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "This property looks for the name of a Git tag to trigger a Bitrise build."
@@ -560,7 +560,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "TriggerMapItemModelRegexCondition": {
+    "TriggerMapItemRegexConditionModel": {
       "properties": {
         "regex": {
           "type": "string",
@@ -592,21 +592,21 @@
 
         "push_branch": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "A branch of the project's repository. Bitrise triggers a build if code is pushed to the branch defined in this property."
         },
         "commit_message": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Define a Git commit message that should trigger a Bitrise build."
         },
         "changed_files": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Set a filepath or a folder. If any file or files change in that location, Bitrise triggers a build."
@@ -614,14 +614,14 @@
 
         "pull_request_source_branch": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Bitrise triggers a build if the branch name in this property matches the source branch of a pull request opened in the project's repository."
         },
         "pull_request_target_branch": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Bitrise triggers a build if the branch name in the property matches the target branch of a pull request opened in the project's repository."
@@ -632,14 +632,14 @@
         },
         "pull_request_label": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "You can mark pull requests with labels. If a pull request's label matches the label in this property, Bitrise triggers a build."
         },
         "pull_request_comment": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "This property looks for comments on pull requests to trigger Bitrise builds."
@@ -647,7 +647,7 @@
 
         "tag": {
           "oneOf": [
-            { "$ref": "#/definitions/TriggerMapItemModelRegexCondition" },
+            { "$ref": "#/definitions/TriggerMapItemRegexConditionModel" },
             { "type": "string" }
           ],
           "description": "Bitrise triggers a build when a Git tag matching the tag defined in this property is pushed to the project's repository."
