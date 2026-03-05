@@ -558,14 +558,19 @@
       "type": "object"
     },
     "TriggerMapItemRegexConditionModel": {
+      "type": "object",
       "properties": {
+        "pattern": {
+          "type": "string",
+          "description": "A glob pattern used to match against the condition."
+        },
         "regex": {
           "type": "string",
-          "description": "A regular expression pattern used to match against specific code event attributes."
+          "description": "A regular expression pattern used to match against the condition."
         }
       },
-      "additionalProperties": false,
-      "type": "object"
+      "oneOf": [{ "required": ["pattern"] }, { "required": ["regex"] }],
+      "additionalProperties": false
     },
     "TriggerMapItemModel": {
       "properties": {
