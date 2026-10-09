@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=../../schemas/json/bitrise.json
+format_version: '13'
+
+step_bundles:
+  build:
+    run_if:
+      enveq: RUN_BUILD
+    steps:
+      - script@1: {}
